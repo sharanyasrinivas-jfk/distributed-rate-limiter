@@ -1,0 +1,19 @@
+routes:
+  - path_prefix: /api/orders
+    backend: http://orders-service:8081
+    algorithm: sliding_window_counter
+    limits:
+      default: { requests: 100, window_seconds: 60 }
+      pro:     { requests: 1000, window_seconds: 60 }
+      unauthenticated: { requests: 20, window_seconds: 60 }
+  - path_prefix: /api/users
+    backend: http://users-service:8082
+    algorithm: token_bucket
+    limits:
+      default: { capacity: 20, refill_rate_per_sec: 1 }
+      pro:     { capacity: 200, refill_rate_per_sec: 10 }
+      unauthenticated: { capacity: 5, refill_rate_per_sec: 1 }
+
+redis:
+  addr: "redis:6379"
+  fail_mode: "open"   # or "closed" — behavior when Redis is unreachable

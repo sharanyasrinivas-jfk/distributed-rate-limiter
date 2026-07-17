@@ -1,0 +1,32 @@
+services:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  orders-service:
+    image: kennethreitz/httpbin
+    ports:
+      - "8081:80"
+
+  users-service:
+    image: kennethreitz/httpbin
+    ports:
+      - "8082:80"
+
+  gateway:
+    build:
+      context: ..
+      dockerfile: deployments/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      REDIS_ADDR: "redis:6379"
+      JWT_SECRET: "change-me-in-production"
+      ADMIN_USERNAME: "admin"
+      ADMIN_PASSWORD: "admin"
+      PORT: "8080"
+    depends_on:
+      - redis
+      - orders-service
+      - users-service

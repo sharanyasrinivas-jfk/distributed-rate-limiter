@@ -1,0 +1,19 @@
+# Go
+bin/
+*.exe
+*.test
+
+# Local env
+.env
+configs/config.local.yaml
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Node (frontend)
+web/admin-dashboard/node_modules/
+web/admin-dashboard/dist/
